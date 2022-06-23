@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+variable "region" {
+  description = "Location for load balancer and Cloud Run resources."
+  type        = string
+}
 
 variable "location" {
   description = "The location where resources are going to be deployed."

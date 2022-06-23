@@ -21,6 +21,7 @@
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
 | members | Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users.` | `list(string)` | `[]` | no |
 | prevent\_destroy | Set the `prevent_destroy` lifecycle attribute on the Cloud KMS key. | `bool` | `true` | no |
+| region | Location for load balancer and Cloud Run resources. | `string` | n/a | yes |
 | serverless\_project\_id | The project to deploy the cloud run service. | `string` | n/a | yes |
 | service\_name | Shared VPC name. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. | `string` | n/a | yes |
@@ -33,8 +34,12 @@
 | Name | Description |
 |------|-------------|
 | connector\_id | VPC serverless connector ID. |
-| keyring | Name of the Cloud KMS keyring. |
-| keys | Name of the Cloud KMS crypto key |
-| service\_name | Name of the created service |
+| domain\_map\_id | Unique Identifier for the created domain map. |
+| domain\_map\_status | Status of Domain mapping. |
+| load\_balancer\_ip | IP Address used by Load Balancer. |
+| revision | Deployed revision for the service. |
+| service\_id | Unique Identifier for the created service. |
+| service\_status | Status of the created service. |
+| service\_url | The URL on which the deployed service is available. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

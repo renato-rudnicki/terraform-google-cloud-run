@@ -14,52 +14,42 @@
  * limitations under the License.
  */
 
-output "load-balancer-ip" {
-  value       = module.lb-http.external_ip
+output "connector_id" {
+  description = "VPC serverless connector ID."
+  value       = module.secure_cloud_run.connector_id
+}
+
+output "load_balancer_ip" {
+  value       = module.secure_cloud_run.load_balancer_ip
   description = "IP Address used by Load Balancer."
 }
 
-output "service_name" {
-  value       = module.cloud_run.service_name
-  description = "Name of the created service."
-}
-
 output "revision" {
-  value       = module.cloud_run.revision
+  value       = module.secure_cloud_run.revision
   description = "Deployed revision for the service."
 }
 
 output "service_url" {
-  value       = module.cloud_run.service_url
+  value       = module.secure_cloud_run.service_url
   description = "The URL on which the deployed service is available."
 }
 
-output "project_id" {
-  value       = module.cloud_run.project_id
-  description = "Google Cloud project in which the service was created."
-}
-
-output "location" {
-  value       = module.cloud_run.location
-  description = "Location in which the Cloud Run service was created."
-}
-
 output "service_id" {
-  value       = module.cloud_run.service_id
+  value       = module.secure_cloud_run.service_id
   description = "Unique Identifier for the created service."
 }
 
 output "service_status" {
-  value       = module.cloud_run.service_status
+  value       = module.secure_cloud_run.service_status
   description = "Status of the created service."
 }
 
 output "domain_map_id" {
-  value       = module.cloud_run.domain_map_id
+  value       = module.secure_cloud_run.domain_map_id
   description = "Unique Identifier for the created domain map."
 }
 
 output "domain_map_status" {
-  value       = module.cloud_run.domain_map_status
+  value       = module.secure_cloud_run.domain_map_status
   description = "Status of Domain mapping."
 }
