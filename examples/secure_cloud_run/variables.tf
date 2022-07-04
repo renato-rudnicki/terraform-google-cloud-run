@@ -28,7 +28,7 @@ variable "domain" {
 
 variable "lb_name" {
   description = "Name for load balancer and associated resources."
-  default     = "tf-cr-lb07"
+  default     = "tf-cr-lb8"
 }
 
 variable "location" {
@@ -147,14 +147,17 @@ variable "key_protection_level" {
 variable "artifact_registry_repository_project_id" {
   description = "Artifact Registry Repository Project ID to grant serverless identity viewer role."
   type        = string
+  default = ""
 }
 
 variable "artifact_registry_repository_location" {
   description = "Artifact Registry Repository location to grant serverless identity viewer role."
   type        = string
+  default = ""
 }
 
 variable "artifact_registry_repository_name" {
   description = "Artifact Registry Repository name to grant serverless identity viewer role"
   type        = string
+  default = ""
 }

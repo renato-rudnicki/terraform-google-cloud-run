@@ -53,3 +53,18 @@ output "domain_map_status" {
   value       = module.cloud_run_core.domain_map_status
   description = "Status of Domain mapping."
 }
+
+# output "kms_project_id" {
+#   value = module.cloud_run_security.project_id
+#   description = "The project where KMS will be created."
+# }
+
+# output "keyring_name" {
+#   value = module.cloud_run_security.keyring_name
+#   description = "Keyring name."
+# }
+
+# output "keys" {
+#   value = module.cloud_run_security.keys
+#   description = "Key name."
+# }

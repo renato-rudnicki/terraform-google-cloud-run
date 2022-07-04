@@ -53,3 +53,28 @@ output "domain_map_status" {
   value       = module.example_cloud_run.domain_map_status
   description = "Status of Domain mapping."
 }
+
+output "kms_project_id" {
+  value = local.kms_project_id #module.example_cloud_run.kms_project_id
+  description = "The project where KMS will be created."
+}
+
+output "keyring_name" {
+  value = local.keyring_name #module.example_cloud_run.keyring_name
+  description = "Keyring name."
+}
+
+output "key_name" {
+  value = local.key_name #module.example_cloud_run.key_name
+  description = "Key name."
+}
+
+output "serverless_project_id" {
+  value = local.serverless_project_id #module.example_cloud_run.key_name
+  description = "The project where cloud run is going to be deployed."
+}
+
+output "project_id" {
+  value = module.example_cloud_run.project_id
+  description = "The project where cloud run is going to be deployed."
+}

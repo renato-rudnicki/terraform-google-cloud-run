@@ -26,17 +26,27 @@ import (
 func TestCloudRun(t *testing.T) {
 	secure_cloud_run := tft.NewTFBlueprintTest(t)
 	secure_cloud_run.DefineVerify(func(assert *assert.Assertions) {
-		secure_cloud_run.DefaultVerify(assert)
+		//secure_cloud_run.DefaultVerify(assert)
 
-		// gcloudArgsCloudRun := gcloud.WithCommonArgs([]string{"--format", "json"})
-		// opCloudRun := gcloud.Run(t, "run services list", gcloudArgsCloudRun).Array()
-		// assert.Equal(fmt.Sprintf("hello-world-with-apis-test07"), opCloudRun[0].Get("metadata.name").String(), "has expected name")
-
+		fmt.Println("------------------------------- KMS TEST -------------------------------")
 		kmsProjectName := secure_cloud_run.GetStringOutput("kms_project_id")
-		kmsKeyRingName := secure_cloud_run.GetStringOutput("data_ingestion_topic_name")
-		//gcloudArgsCloudRun := gcloud.WithCommonArgs([]string{"--format", "json"})
-		opCloudRun := gcloud.Run(t, fmt.Sprintf("alpha kms keys list --keyring=%s --project=%s --location us-central1", kmsKeyRingName, kmsProjectName))
-		assert.Equal(fmt.Sprintf("projects/%s/locations/us-central1/keyRings/%s/cryptoKeys/cloud-run07", kmsProjectName, kmsKeyRingName), opCloudRun.Get("name").String(), "has expected name")
+		kmsKeyRingName := secure_cloud_run.GetStringOutput("keyring_name")
+		kmsKey := secure_cloud_run.GetStringOutput("key_name")
+		fmt.Println(kmsProjectName)
+		fmt.Println(kmsKeyRingName)
+		fmt.Println(kmsKey)
+		opKMS := gcloud.Runf(t, "kms keys list --keyring=%s --project=%s --location us-central1", kmsKeyRingName, kmsProjectName).Array()
+		keyFullName := fmt.Sprintf("projects/%s/locations/us-central1/keyRings/%s/cryptoKeys/%s", kmsProjectName, kmsKeyRingName, kmsKey)
+		assert.Equal(keyFullName, opKMS[0].Get("name").String(), fmt.Sprintf("should have key %s", keyFullName))
+
+		fmt.Println("------------------------------- CLOUD RUN TEST -------------------------------")
+		serviceId := secure_cloud_run.GetStringOutput("service_id")
+		projectId := secure_cloud_run.GetStringOutput("project_id")
+		fmt.Println(serviceId)
+		fmt.Println(projectId)
+		opCloudRun := gcloud.Runf(t, "run services list --project=%s", projectId).Array()
+		cloudRunId := fmt.Sprintf("locations/us-central1/namespaces/%s/services/%s", projectId, opCloudRun[0].Get("metadata.name").String())
+		assert.Equal(serviceId, cloudRunId, fmt.Sprintf("Should have same id: %s", serviceId))
 	})
 	secure_cloud_run.Test()
 }

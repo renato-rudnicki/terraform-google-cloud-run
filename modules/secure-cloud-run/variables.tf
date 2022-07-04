@@ -126,11 +126,13 @@ variable "artifact_registry_repository_project_id" {
 variable "artifact_registry_repository_location" {
   description = "Artifact Registry Repository location to grant serverless identity viewer role."
   type        = string
+  default     = ""
 }
 
 variable "artifact_registry_repository_name" {
   description = "Artifact Registry Repository name to grant serverless identity viewer role"
   type        = string
+  default     = ""
 }
 
 variable "use_artifact_registry_image" {

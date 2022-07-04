@@ -54,3 +54,22 @@ output "domain_map_status" {
   description = "Status of Domain mapping."
 }
 
+# output "kms_project_id" {
+#   value = module.secure_cloud_run.kms_project_id
+#   description = "The project where KMS will be created."
+# }
+
+# output "keyring_name" {
+#   value = module.secure_cloud_run.keyring_name
+#   description = "Keyring name."
+# }
+
+# output "key_name" {
+#   value = module.secure_cloud_run.key_name
+#   description = "Key name."
+# }
+
+output "project_id" {
+  description = "Google Cloud project in which the service was created"
+  value       = var.serverless_project_id
+}

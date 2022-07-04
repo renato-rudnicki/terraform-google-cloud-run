@@ -28,7 +28,6 @@ variable "domain" {
 
 variable "lb_name" {
   description = "Name for load balancer and associated resources."
-  default     = "tf-cr-lb07"
 }
 
 variable "location" {
@@ -52,7 +51,7 @@ variable "service_name" {
 }
 
 variable "image" {
-  description = "GCR hosted image URL to deploy."
+  description = "GAR hosted image URL to deploy."
   type        = string
 }
 
@@ -64,13 +63,11 @@ variable "cloud_run_sa" {
 variable "vpc_connector_id" {
   description = "VPC Connector id in the format projects/PROJECT/locations/LOCATION/connectors/NAME."
   type        = string
-  default     = "projects/prj-p-shared-restricted-1552/locations/us-central1/connectors/serverless-connector"
 }
 
 variable "encryption_key" {
   description = "CMEK encryption key self-link expected in the format projects/PROJECT/locations/LOCATION/keyRings/KEY-RING/cryptoKeys/CRYPTO-KEY."
   type        = string
-  default     = "projects/prj-bu2-p-env-secrets-f06c/locations/us-central1/keyRings/cloud-run-keyring07/cryptoKeys/cloud-run07"
 }
 
 variable "env_vars" {
@@ -119,9 +116,9 @@ variable "kms_project_id" {
 }
 
 variable "prevent_destroy" {
-  description = "Set the prevent_destroy lifecycle attribute on keys.."
+  description = "Set the prevent_destroy lifecycle attribute on keys."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "keyring_name" {

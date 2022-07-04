@@ -28,3 +28,18 @@ output "keyring_resource" {
   description = "Keyring resource."
   value       = module.cloud_run_kms.keyring_resource
 }
+
+# output "kms_project_id" {
+#   value = module.cloud_run_kms.kms_project_id
+#   description = "The project where KMS will be created."
+# }
+
+# output "keyring_name" {
+#   value = module.cloud_run_kms.keyring_name
+#   description = "Keyring name."
+# }
+
+# output "keys" {
+#   value = module.cloud_run_kms.keys
+#   description = "Key name."
+# }
