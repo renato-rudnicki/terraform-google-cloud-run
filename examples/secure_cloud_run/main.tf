@@ -37,4 +37,5 @@ module "secure_cloud_run" {
   artifact_registry_repository_project_id = var.serverless_project_id
   artifact_registry_repository_name       = var.artifact_registry_repository_name
   artifact_registry_repository_location   = var.region
+  connector_on_host_project               = var.connector_on_host_project
 }

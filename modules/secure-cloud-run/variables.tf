@@ -140,3 +140,9 @@ variable "use_artifact_registry_image" {
   type        = bool
   default     = false
 }
+
+variable "connector_on_host_project" {
+  description = "Connector is going to be created on the host project if true. When false, connector is going to be created on service project. For more information, access [documentation](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc)."
+  type        = bool
+  default     = true
+}

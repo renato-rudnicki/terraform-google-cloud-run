@@ -47,4 +47,5 @@ module "example_cloud_run" {
   cloud_run_sa                            = var.cloud_run_sa
   vpc_connector_id                        = var.vpc_connector_id
   encryption_key                          = var.encryption_key
+  connector_on_host_project               = var.connector_on_host_project
 }

@@ -78,3 +78,8 @@ output "project_id" {
   value = module.example_cloud_run.project_id
   description = "The project where cloud run is going to be deployed."
 }
+
+output "vpc_project_id" {
+  value = module.example_cloud_run.vpc_project_id
+  description = "The project where VPC Connector is going to be deployed."
+}

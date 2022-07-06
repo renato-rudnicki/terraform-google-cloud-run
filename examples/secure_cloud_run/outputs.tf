@@ -70,6 +70,11 @@ output "domain_map_status" {
 # }
 
 output "project_id" {
-  description = "Google Cloud project in which the service was created"
+  description = "Google Cloud project in which the service was created."
   value       = var.serverless_project_id
+}
+
+output "vpc_project_id" {
+  description = "The project where VPC Connector is going to be deployed."
+  value       = var.vpc_project_id
 }

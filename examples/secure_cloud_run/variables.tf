@@ -28,7 +28,7 @@ variable "domain" {
 
 variable "lb_name" {
   description = "Name for load balancer and associated resources."
-  default     = "tf-cr-lb8"
+  default     = "tf-cr-lb"
 }
 
 variable "location" {
@@ -160,4 +160,10 @@ variable "artifact_registry_repository_name" {
   description = "Artifact Registry Repository name to grant serverless identity viewer role"
   type        = string
   default = ""
+}
+
+variable "connector_on_host_project" {
+  description = "Connector is going to be created on the host project if true. When false, connector is going to be created on service project. For more information, access [documentation](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc)."
+  type        = bool
+  default     = true
 }

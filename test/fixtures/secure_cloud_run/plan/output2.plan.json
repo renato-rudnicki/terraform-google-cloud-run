@@ -1,0 +1,185 @@
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  [33m~[0m update in-place
+[31m-[0m/[32m+[0m destroy and then create replacement
+[0m
+Terraform will perform the following actions:
+
+[1m  # module.example_cloud_run.module.secure_cloud_run.module.cloud_run_network.google_compute_subnetwork.vpc_subnetwork[0m will be updated in-place[0m[0m
+[0m  [33m~[0m[0m resource "google_compute_subnetwork" "vpc_subnetwork" {
+        [1m[0mcreation_timestamp[0m[0m         = "2022-07-04T12:46:53.598-07:00"
+        [1m[0mgateway_address[0m[0m            = "10.28.0.1"
+        [1m[0mid[0m[0m                         = "projects/prj-p-shared-restricted-1552/regions/us-central1/subnetworks/vpc-subnet0a14"
+        [1m[0mip_cidr_range[0m[0m              = "10.28.0.0/28"
+        [1m[0mname[0m[0m                       = "vpc-subnet0a14"
+        [1m[0mnetwork[0m[0m                    = "https://www.googleapis.com/compute/v1/projects/prj-p-shared-restricted-1552/global/networks/vpc-p-shared-restricted"
+        [1m[0mprivate_ip_google_access[0m[0m   = true
+      [33m~[0m [0m[1m[0mprivate_ipv6_google_access[0m[0m = "DISABLE_GOOGLE_ACCESS" [33m->[0m [0m"true"
+        [1m[0mproject[0m[0m                    = "prj-p-shared-restricted-1552"
+        [1m[0mpurpose[0m[0m                    = "PRIVATE"
+        [1m[0mregion[0m[0m                     = "us-central1"
+        [1m[0msecondary_ip_range[0m[0m         = []
+        [1m[0mself_link[0m[0m                  = "https://www.googleapis.com/compute/v1/projects/prj-p-shared-restricted-1552/regions/us-central1/subnetworks/vpc-subnet0a14"
+        [1m[0mstack_type[0m[0m                 = "IPV4_ONLY"
+    }
+
+[1m  # module.example_cloud_run.module.secure_cloud_run.module.cloud_run_core.module.cloud_run.google_cloud_run_service.main[0m will be updated in-place[0m[0m
+[0m  [33m~[0m[0m resource "google_cloud_run_service" "main" {
+        [1m[0mautogenerate_revision_name[0m[0m = true
+        [1m[0mid[0m[0m                         = "locations/us-central1/namespaces/prj-bu2-p-sample-restrict-ff6c/services/hello-world-with-apis-test0a14"
+        [1m[0mlocation[0m[0m                   = "us-central1"
+        [1m[0mname[0m[0m                       = "hello-world-with-apis-test0a14"
+        [1m[0mproject[0m[0m                    = "prj-bu2-p-sample-restrict-ff6c"
+        [1m[0mstatus[0m[0m                     = [
+            {
+                conditions                   = [
+                    {
+                        message = ""
+                        reason  = ""
+                        status  = "True"
+                        type    = "Ready"
+                    },
+                    {
+                        message = ""
+                        reason  = ""
+                        status  = "True"
+                        type    = "ConfigurationsReady"
+                    },
+                    {
+                        message = ""
+                        reason  = ""
+                        status  = "True"
+                        type    = "RoutesReady"
+                    },
+                ]
+                latest_created_revision_name = "hello-world-with-apis-test0a14-78hrm"
+                latest_ready_revision_name   = "hello-world-with-apis-test0a14-78hrm"
+                observed_generation          = 1
+                url                          = "https://hello-world-with-apis-test0a14-727f7aygya-uc.a.run.app"
+            },
+        ]
+
+        metadata {
+            [1m[0mannotations[0m[0m      = {
+                "run.googleapis.com/ingress"        = "internal-and-cloud-load-balancing"
+                "run.googleapis.com/ingress-status" = "internal-and-cloud-load-balancing"
+                "serving.knative.dev/creator"       = "renatojr@ciandt.com"
+                "serving.knative.dev/lastModifier"  = "renatojr@ciandt.com"
+            }
+            [1m[0mgeneration[0m[0m       = 1
+            [1m[0mlabels[0m[0m           = {
+                "cloud.googleapis.com/location" = "us-central1"
+            }
+            [1m[0mnamespace[0m[0m        = "prj-bu2-p-sample-restrict-ff6c"
+            [1m[0mresource_version[0m[0m = "AAXjAAWeQ10"
+            [1m[0mself_link[0m[0m        = "/apis/serving.knative.dev/v1/namespaces/41812270850/services/hello-world-with-apis-test0a14"
+            [1m[0muid[0m[0m              = "9661cee5-3062-4d1c-b02b-0acc19c1c663"
+        }
+
+      [33m~[0m [0mtemplate {
+          [33m~[0m [0mmetadata {
+              [33m~[0m [0m[1m[0mannotations[0m[0m = {
+                  [31m-[0m [0m"autoscaling.knative.dev/maxScale"                   = "2"
+                  [31m-[0m [0m"autoscaling.knative.dev/minScale"                   = "1"
+                  [31m-[0m [0m"run.googleapis.com/encryption-key"                  = "projects/prj-bu2-p-env-secrets-f06c/locations/us-central1/keyRings/cloud-run-keyring0a14/cryptoKeys/cloud-run0a14"
+                  [31m-[0m [0m"run.googleapis.com/post-key-revocation-action-type" = "prevent-new"
+                  [31m-[0m [0m"run.googleapis.com/vpc-access-connector"            = "projects/prj-p-shared-restricted-1552/locations/us-central1/connectors/serverless-connector0a14"
+                  [31m-[0m [0m"run.googleapis.com/vpc-access-egress"               = "private-ranges-only"
+                } [33m->[0m [0m(known after apply)
+                [1m[0mgeneration[0m[0m  = 0
+                [1m[0mlabels[0m[0m      = {}
+            }
+
+            spec {
+                [1m[0mcontainer_concurrency[0m[0m = 80
+                [1m[0mservice_account_name[0m[0m  = "project-service-account@prj-bu2-p-sample-restrict-ff6c.iam.gserviceaccount.com"
+                [1m[0mtimeout_seconds[0m[0m       = 120
+
+                containers {
+                    [1m[0margs[0m[0m    = []
+                    [1m[0mcommand[0m[0m = []
+                    [1m[0mimage[0m[0m   = "us-docker.pkg.dev/cloudrun/container/hello"
+
+                    ports {
+                        [1m[0mcontainer_port[0m[0m = 8080
+                        [1m[0mname[0m[0m           = "http1"
+                    }
+
+                    resources {
+                        [1m[0mlimits[0m[0m   = {
+                            "cpu"    = "1000m"
+                            "memory" = "512Mi"
+                        }
+                        [1m[0mrequests[0m[0m = {}
+                    }
+                }
+            }
+        }
+
+        traffic {
+            [1m[0mlatest_revision[0m[0m = true
+            [1m[0mpercent[0m[0m         = 100
+        }
+    }
+
+[1m  # module.example_cloud_run.module.secure_cloud_run.module.cloud_run_core.module.lb-http.google_compute_backend_service.default["default"][0m will be updated in-place[0m[0m
+[0m  [33m~[0m[0m resource "google_compute_backend_service" "default" {
+        [1m[0maffinity_cookie_ttl_sec[0m[0m         = 0
+        [1m[0mconnection_draining_timeout_sec[0m[0m = 300
+        [1m[0mcreation_timestamp[0m[0m              = "2022-07-04T12:47:04.603-07:00"
+        [1m[0mcustom_request_headers[0m[0m          = []
+        [1m[0mcustom_response_headers[0m[0m         = []
+        [1m[0menable_cdn[0m[0m                      = false
+        [1m[0mfingerprint[0m[0m                     = "eszTUI-fELQ="
+        [1m[0mhealth_checks[0m[0m                   = []
+        [1m[0mid[0m[0m                              = "projects/prj-bu2-p-sample-restrict-ff6c/global/backendServices/tf-cr-lb8-backend-default"
+        [1m[0mload_balancing_scheme[0m[0m           = "EXTERNAL"
+        [1m[0mname[0m[0m                            = "tf-cr-lb8-backend-default"
+        [1m[0mport_name[0m[0m                       = "http"
+        [1m[0mproject[0m[0m                         = "prj-bu2-p-sample-restrict-ff6c"
+        [1m[0mprotocol[0m[0m                        = "HTTP"
+        [1m[0msecurity_policy[0m[0m                 = "https://www.googleapis.com/compute/beta/projects/prj-bu2-p-sample-restrict-ff6c/global/securityPolicies/cloud-armor-waf-policy0a14"
+        [1m[0mself_link[0m[0m                       = "https://www.googleapis.com/compute/v1/projects/prj-bu2-p-sample-restrict-ff6c/global/backendServices/tf-cr-lb8-backend-default"
+        [1m[0msession_affinity[0m[0m                = "NONE"
+        [1m[0mtimeout_sec[0m[0m                     = 30
+
+        backend {
+            [1m[0mbalancing_mode[0m[0m               = "UTILIZATION"
+            [1m[0mcapacity_scaler[0m[0m              = 1
+            [1m[0mgroup[0m[0m                        = "https://www.googleapis.com/compute/v1/projects/prj-bu2-p-sample-restrict-ff6c/regions/us-central1/networkEndpointGroups/serverless-neg0a14"
+            [1m[0mmax_connections[0m[0m              = 0
+            [1m[0mmax_connections_per_endpoint[0m[0m = 0
+            [1m[0mmax_connections_per_instance[0m[0m = 0
+            [1m[0mmax_rate[0m[0m                     = 0
+            [1m[0mmax_rate_per_endpoint[0m[0m        = 0
+            [1m[0mmax_rate_per_instance[0m[0m        = 0
+            [1m[0mmax_utilization[0m[0m              = 0
+        }
+
+      [32m+[0m [0mlog_config {
+          [32m+[0m [0m[1m[0menable[0m[0m = false
+        }
+    }
+
+[1m  # module.example_cloud_run.module.secure_cloud_run.module.cloud_run_network.module.serverless_connector.google_vpc_access_connector.connector_beta["serverless-connector0a14"][0m must be [1m[31mreplaced[0m[0m
+[0m[31m-[0m/[32m+[0m[0m resource "google_vpc_access_connector" "connector_beta" {
+      [33m~[0m [0m[1m[0mid[0m[0m             = "projects/prj-p-shared-restricted-1552/locations/us-central1/connectors/serverless-connector0a14" [33m->[0m [0m(known after apply)
+        [1m[0mmachine_type[0m[0m   = "e2-micro"
+        [1m[0mmax_instances[0m[0m  = 7
+      [33m~[0m [0m[1m[0mmax_throughput[0m[0m = 700 [33m->[0m [0m300
+        [1m[0mmin_instances[0m[0m  = 2
+        [1m[0mmin_throughput[0m[0m = 200
+        [1m[0mname[0m[0m           = "serverless-connector0a14"
+        [1m[0mproject[0m[0m        = "prj-p-shared-restricted-1552"
+        [1m[0mregion[0m[0m         = "us-central1"
+      [33m~[0m [0m[1m[0mself_link[0m[0m      = "projects/prj-p-shared-restricted-1552/locations/us-central1/connectors/serverless-connector0a14" [33m->[0m [0m(known after apply)
+      [33m~[0m [0m[1m[0mstate[0m[0m          = "READY" [33m->[0m [0m(known after apply)
+
+        subnet {
+            [1m[0mname[0m[0m       = "vpc-subnet0a14"
+            [1m[0mproject_id[0m[0m = "prj-p-shared-restricted-1552"
+        }
+    }
+
+[0m[1mPlan:[0m 1 to add, 3 to change, 1 to destroy.[0m

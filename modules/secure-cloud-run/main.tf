@@ -54,7 +54,7 @@ module "cloud_run_network" {
   vpc_project_id            = var.vpc_project_id
   serverless_project_id     = var.serverless_project_id
   shared_vpc_name           = var.shared_vpc_name
-  connector_on_host_project = true
+  connector_on_host_project = var.connector_on_host_project
   ip_cidr_range             = var.ip_cidr_range
 
   depends_on = [
