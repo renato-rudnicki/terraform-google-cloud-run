@@ -101,10 +101,10 @@ func TestCloudRun(t *testing.T) {
 
 		fmt.Println("------------------------------- LOADBALANCER TEST -------------------------------")
 		fmt.Println(projectId)
-		opLoadBalancer := gcloud.Runf(t, "compute addresses list --filter=\"addressType=('EXTERNAL')\" --project=%s", projectId).Array()
+		//opLoadBalancer := gcloud.Runf(t, "compute addresses list --filter=\"addressType=('EXTERNAL')\" --project=%s", projectId).Array()
+		//assert.Equal(fmt.Sprintf("tf-cr-lb-address"), opLoadBalancer[0].Get("name").String(), "has expected name ")
+		opLoadBalancer := gcloud.Runf(t, "compute addresses list --project=%s", projectId).Array()
 		assert.Equal(fmt.Sprintf("tf-cr-lb-address"), opLoadBalancer[0].Get("name").String(), "has expected name ")
-		//opLoadBalancer := gcloud.Runf(t, "compute addresses list --filter=\"addressType=('EXTERNAL')\" --project=%s", projectId)
-		//assert.Equal(fmt.Sprintf("tf-cr-lb-address"), opLoadBalancer.Get("name").String(), "has expected name ")
 	})
 	secure_cloud_run.Test()
 }
