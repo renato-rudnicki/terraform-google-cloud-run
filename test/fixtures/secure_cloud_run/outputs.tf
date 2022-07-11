@@ -55,22 +55,22 @@ output "domain_map_status" {
 }
 
 output "kms_project_id" {
-  value = local.kms_project_id #module.example_cloud_run.kms_project_id
+  value = module.example_cloud_run.kms_project_id #module.example_cloud_run.kms_project_id
   description = "The project where KMS will be created."
 }
 
 output "keyring_name" {
-  value = local.keyring_name #module.example_cloud_run.keyring_name
+  value = module.example_cloud_run.keyring_name #module.example_cloud_run.keyring_name
   description = "Keyring name."
 }
 
 output "key_name" {
-  value = local.key_name #module.example_cloud_run.key_name
+  value = module.example_cloud_run.key_name #module.example_cloud_run.key_name
   description = "Key name."
 }
 
 output "serverless_project_id" {
-  value = local.serverless_project_id #module.example_cloud_run.key_name
+  value = module.example_cloud_run.serverless_project_id #module.example_cloud_run.key_name
   description = "The project where cloud run is going to be deployed."
 }
 
@@ -82,4 +82,19 @@ output "project_id" {
 output "vpc_project_id" {
   value = module.example_cloud_run.vpc_project_id
   description = "The project where VPC Connector is going to be deployed."
+}
+
+output "gca_vpcaccess_sa" {
+  value       = module.example_cloud_run.gca_vpcaccess_sa
+  description = "Service Account for VPC Access."
+}
+
+output "cloud_services_sa" {
+  value       = module.example_cloud_run.cloud_services_sa
+  description = "Service Account for Cloud Run Service."
+}
+
+output "run_identity_services_sa" {
+  value       = module.example_cloud_run.run_identity_services_sa
+  description = "Service Identity to run services."
 }

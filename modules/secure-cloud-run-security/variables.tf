@@ -27,7 +27,7 @@ variable "serverless_project_id" {
 variable "prevent_destroy" {
   description = "Set the prevent_destroy lifecycle attribute on keys.."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "keyring_name" {

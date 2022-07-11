@@ -93,7 +93,8 @@ variable "members" {
 variable "prevent_destroy" {
   description = "Set the `prevent_destroy` lifecycle attribute on the Cloud KMS key."
   type        = bool
-  default     = true
+  #default     = true
+  default = false
 }
 
 variable "keyring_name" {
@@ -121,6 +122,7 @@ variable "ip_cidr_range" {
 variable "artifact_registry_repository_project_id" {
   description = "Artifact Registry Repository Project ID to grant serverless identity viewer role."
   type        = string
+  default     = ""
 }
 
 variable "artifact_registry_repository_location" {

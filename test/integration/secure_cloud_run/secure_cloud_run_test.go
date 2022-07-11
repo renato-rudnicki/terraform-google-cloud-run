@@ -21,90 +21,74 @@ import (
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
 	"github.com/stretchr/testify/assert"
+	"github.com/tidwall/gjson"
 )
+
+func getResultFieldStrSlice(rs []gjson.Result, field string) []string {
+	s := make([]string, 0)
+	for _, r := range rs {
+		s = append(s, r.Get(field).String())
+	}
+	return s
+}
 
 func TestCloudRun(t *testing.T) {
 	secure_cloud_run := tft.NewTFBlueprintTest(t)
 	secure_cloud_run.DefineVerify(func(assert *assert.Assertions) {
 		//secure_cloud_run.DefaultVerify(assert)
-		// kmsProjectName := secure_cloud_run.GetStringOutput("kms_project_id")
-		// kmsKeyRingName := secure_cloud_run.GetStringOutput("keyring_name")
-		// kmsKey := secure_cloud_run.GetStringOutput("key_name")
-		// serviceId := secure_cloud_run.GetStringOutput("service_id")
+		kmsProjectName := secure_cloud_run.GetStringOutput("kms_project_id")
+		kmsKeyRingName := secure_cloud_run.GetStringOutput("keyring_name")
+		kmsKey := secure_cloud_run.GetStringOutput("key_name")
+		serviceId := secure_cloud_run.GetStringOutput("service_id")
 		projectId := secure_cloud_run.GetStringOutput("project_id")
 		vpcProjectId := secure_cloud_run.GetStringOutput("vpc_project_id")
-		// connectorId := secure_cloud_run.GetStringOutput("connector_id")
+		connectorId := secure_cloud_run.GetStringOutput("connector_id")
+		run_identity_services_sa := secure_cloud_run.GetStringOutput("run_identity_services_sa")
 
-		// fmt.Println("------------------------------- KMS TEST -------------------------------")
-		// fmt.Println(kmsProjectName)
-		// fmt.Println(kmsKeyRingName)
-		// fmt.Println(kmsKey)
-		// opKMS := gcloud.Runf(t, "kms keys list --keyring=%s --project=%s --location us-central1", kmsKeyRingName, kmsProjectName).Array()
-		// keyFullName := fmt.Sprintf("projects/%s/locations/us-central1/keyRings/%s/cryptoKeys/%s", kmsProjectName, kmsKeyRingName, kmsKey)
-		// assert.Equal(keyFullName, opKMS[0].Get("name").String(), fmt.Sprintf("should have key %s", keyFullName))
+		fmt.Println("------------------------------- KMS TEST -------------------------------")
+		opKMS := gcloud.Runf(t, "kms keys list --keyring=%s --project=%s --location us-central1", kmsKeyRingName, kmsProjectName).Array()
+		keyFullName := fmt.Sprintf("projects/%s/locations/us-central1/keyRings/%s/cryptoKeys/%s", kmsProjectName, kmsKeyRingName, kmsKey)
+		assert.Equal(keyFullName, opKMS[0].Get("name").String(), fmt.Sprintf("should have key %s", keyFullName))
 
-		// fmt.Println("------------------------------- CLOUD RUN TEST -------------------------------")
-		// fmt.Println(serviceId)
-		// fmt.Println(projectId)
-		// opCloudRun := gcloud.Runf(t, "run services list --project=%s", projectId).Array()
-		// cloudRunId := fmt.Sprintf("locations/us-central1/namespaces/%s/services/%s", projectId, opCloudRun[0].Get("metadata.name").String())
-		// assert.Equal(serviceId, cloudRunId, fmt.Sprintf("Should have same id: %s", serviceId))
+		fmt.Println("------------------------------- CLOUD RUN TEST -------------------------------")
+		opCloudRun := gcloud.Runf(t, "run services list --project=%s", projectId).Array()
+		cloudRunId := fmt.Sprintf("locations/us-central1/namespaces/%s/services/%s", projectId, opCloudRun[0].Get("metadata.name").String())
+		assert.Equal(serviceId, cloudRunId, fmt.Sprintf("Should have same id: %s", serviceId))
 
-		// fmt.Println("------------------------------- VPC CONNECTOR TEST -------------------------------")
-		// fmt.Println(vpcProjectId)
-		// fmt.Println(connectorId)
-		// opVPCConnector := gcloud.Runf(t, "compute networks vpc-access connectors list --region=us-central1 --project=%s", vpcProjectId).Array()
-		// containsName := false
-		// for _, connectorJson := range opVPCConnector {
-		// 	if connectorJson.Get("name").String() == connectorId {
-		// 		containsName = true
-		// 		break
-		// 	}
-		// }
-		// assert.True(containsName, fmt.Sprintf("Should have same id: %s", connectorId))
+		fmt.Println("------------------------------- VPC CONNECTOR TEST -------------------------------")
+		opVPCConnector := gcloud.Runf(t, "compute networks vpc-access connectors list --region=us-central1 --project=%s", vpcProjectId).Array()
+		vpcConnectorNames := getResultFieldStrSlice(opVPCConnector, "name")
+		assert.Containsf(vpcConnectorNames, connectorId, fmt.Sprintf("Should have same id: %s", connectorId))
 
-		// fmt.Println("------------------------------- CLOUD ARMOR TEST -------------------------------")
-		// fmt.Println(projectId)
-		// opCloudArmor := gcloud.Runf(t, "compute security-policies list --project=%s", projectId).Array()
-		// assert.Equal(fmt.Sprintf("cloud-armor-waf-policy0a22"), opCloudArmor[0].Get("name").String(), "has expected name ")
+		fmt.Println("------------------------------- CLOUD ARMOR TEST -------------------------------")
+		opCloudArmor := gcloud.Runf(t, "compute security-policies list --project=%s", projectId).Array()
+		assert.Equal(fmt.Sprintf("cloud-armor-waf-policy"), opCloudArmor[0].Get("name").String(), "has expected name ")
 
 		fmt.Println("------------------------------- FIREWALL TEST -------------------------------")
-		//gcloud compute firewall-rules list --project=cloud-run-test-355015 --format=json
-		opFirewall := gcloud.Runf(t, "compute firewall-rules list --project=%s", vpcProjectId).Array()
-		serverlessToVpcConnector := false
-		vpcConnectorToServerless := false
-		vpcConnectorToLoadbalancer := false
-		vpcConnectorHealthCheck := false
-		vpcConnectorRequests := false
-		for _, firewallJson := range opFirewall {
-			if firewallJson.Get("name").String() == "serverless-to-vpc-connector" {
-				serverlessToVpcConnector = true
-			}
-			if firewallJson.Get("name").String() == "vpc-connector-to-serverless" {
-				vpcConnectorToServerless = true
-			}
-			if firewallJson.Get("name").String() == "vpc-connector-to-serverless-lb" {
-				vpcConnectorToLoadbalancer = true
-			}
-			if firewallJson.Get("name").String() == "vpc-connector-health-checks" {
-				vpcConnectorHealthCheck = true
-			}
-			if firewallJson.Get("name").String() == "vpc-connector-requests" {
-				vpcConnectorRequests = true
-			}
+		expectFirewalls := []string{
+			"serverless-to-vpc-connector", "vpc-connector-to-serverless",
+			"vpc-connector-to-serverless-lb", "vpc-connector-health-checks",
+			"vpc-connector-requests",
 		}
-		assert.True(serverlessToVpcConnector, "Should have serverless-to-vpc-connector firewall rule")
-		assert.True(vpcConnectorToServerless, "Should have vpc-connector-to-serverless firewall rule")
-		assert.True(vpcConnectorToLoadbalancer, "Should have vpc-connector-to-serverless-lb firewall rule")
-		assert.True(vpcConnectorHealthCheck, "Should have vpc-connector-health-checks firewall rule")
-		assert.True(vpcConnectorRequests, "Should have vpc-connector-requests firewall rule")
+		opFirewall := gcloud.Runf(t, "compute firewall-rules list --project=%s", vpcProjectId).Array()
+		actualFirewalls := getResultFieldStrSlice(opFirewall, "name")
+		assert.Subset(actualFirewalls, expectFirewalls, "Should have all 5 firewall rules")
 
-		fmt.Println("------------------------------- LOADBALANCER TEST -------------------------------")
-		fmt.Println(projectId)
-		//opLoadBalancer := gcloud.Runf(t, "compute addresses list --filter=\"addressType=('EXTERNAL')\" --project=%s", projectId).Array()
-		//assert.Equal(fmt.Sprintf("tf-cr-lb-address"), opLoadBalancer[0].Get("name").String(), "has expected name ")
-		opLoadBalancer := gcloud.Runf(t, "compute addresses list --project=%s", projectId).Array()
-		assert.Equal(fmt.Sprintf("tf-cr-lb-address"), opLoadBalancer[0].Get("name").String(), "has expected name ")
+		fmt.Println("------------------------------- IAM TEST -------------------------------")
+		iamFilter := fmt.Sprintf("bindings.members:'serviceAccount:%s'", run_identity_services_sa)
+		iamOpts := gcloud.WithCommonArgs([]string{"--flatten", "bindings", "--filter", iamFilter, "--format", "json"})
+		orgIamPolicyRoles := gcloud.Run(t, fmt.Sprintf("projects get-iam-policy %s", vpcProjectId), iamOpts).Array()
+		listRoles := getResultFieldStrSlice(orgIamPolicyRoles, "bindings.role")
+		assert.Containsf(listRoles, "roles/vpcaccess.user", fmt.Sprintf("Service account %s should have VPC Access User role", run_identity_services_sa))
+
+		fmt.Println("------------------------------- ORG POLICIES TEST -------------------------------")
+		//orgArgs := gcloud.WithCommonArgs([]string{"--flatten", "listPolicy.allowedValues[]", "--format", "json"})
+
+		opOrgPolicies := gcloud.Run(t, fmt.Sprintf("resource-manager org-policies describe constraints/run.allowedIngress -project=%s", projectId)).Array()
+		fmt.Print(opOrgPolicies)
+		//opOrgPolicies := gcloud.Run(t, fmt.Sprintf("resource-manager org-policies list --project=%s", projectId), orgArgs).Array()
+		assert.Contains(opOrgPolicies[0].Get("listPolicy.allowedValues").String(), fmt.Sprintf("is:internal-and-cloud-load-balancing"), "has expected name")
+		//assert.Contains(opOrgPolicies[1].Get("listPolicy.allowedValues").String(), fmt.Sprintf("private-ranges-only"), "has expected name")
 	})
 	secure_cloud_run.Test()
 }

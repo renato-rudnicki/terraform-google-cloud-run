@@ -55,26 +55,41 @@ output "domain_map_status" {
 }
 
 # output "kms_project_id" {
-#   value = module.secure_cloud_run.kms_project_id
-#   description = "The project where KMS will be created."
-# }
+#    value = module.secure_cloud_run.kms_project_id
+#    description = "The project where KMS will be created."
+#  }
 
-# output "keyring_name" {
-#   value = module.secure_cloud_run.keyring_name
-#   description = "Keyring name."
-# }
+#  output "keyring_name" {
+#    value = module.secure_cloud_run.keyring_name
+#    description = "Keyring name."
+#  }
 
-# output "key_name" {
-#   value = module.secure_cloud_run.key_name
-#   description = "Key name."
-# }
+#  output "key_name" {
+#    value = module.secure_cloud_run.key_name
+#    description = "Key name."
+#  }
 
-output "project_id" {
-  description = "Google Cloud project in which the service was created."
-  value       = var.serverless_project_id
-}
+# output "project_id" {
+#   description = "Google Cloud project in which the service was created."
+#   value       = module.secure_cloud_run.serverless_project_id
+# }
 
 output "vpc_project_id" {
   description = "The project where VPC Connector is going to be deployed."
   value       = var.vpc_project_id
+}
+
+output "gca_vpcaccess_sa" {
+  value       = module.secure_cloud_run.gca_vpcaccess_sa
+  description = "Service Account for VPC Access."
+}
+
+output "cloud_services_sa" {
+  value       = module.secure_cloud_run.cloud_services_sa
+  description = "Service Account for Cloud Run Service."
+}
+
+output "run_identity_services_sa" {
+  value       = module.secure_cloud_run.run_identity_services_sa
+  description = "Service Identity to run services."
 }
