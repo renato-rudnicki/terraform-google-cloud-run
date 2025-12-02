@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,53 @@
  * limitations under the License.
  */
 
+locals {
+  vpc_connectors = {
+    for region, connector in google_vpc_access_connector.cr-multiregion-connectors :
+    region => connector.id
+  }
+}
+
 resource "google_service_account" "sa" {
   project      = var.project_id
   account_id   = "ci-cloud-run-v2-sa"
-  display_name = "Service account for ci-cloud-run-v2"
+  display_name = "Service account for ci-cloud-run-v2-sa"
 }
 
-module "cloud_run_v2" {
-  source = "renato-rudnicki/cloud-run/google//modules/v2"
-  #source  = "GoogleCloudPlatform/cloud-run/google//modules/v2"
-  #version = "~> 0.16"
+resource "google_vpc_access_connector" "cr-multiregion-connectors" {
+  for_each = var.vpc_connectors
 
-  service_name           = "ci-cloud-run-v2"
-  project_id             = var.project_id
-  location               = "us-central1"
+  name    = each.value.name
+  project = var.project_id
+  region  = each.value.region
+
+  subnet {
+    name = each.value.subnet_name
+  }
+
+  min_instances = 2
+  max_instances = 4
+}
+
+module "cloud_run_v2_multiregion" {
+  source = "renato-rudnicki/cloud-run/google//modules/v2"
+
+  for_each = toset(var.regions)
+
+  service_name = "cloudrun-multiregion-${each.key}"
+  project_id   = var.project_id
+  location     = each.key
+
   create_service_account = false
   service_account        = google_service_account.sa.email
 
   cloud_run_deletion_protection = var.cloud_run_deletion_protection
+
+  vpc_access = {
+    connector          = local.vpc_connectors[each.key]
+    egress             = "PRIVATE_RANGES_ONLY"
+    network_interfaces = null
+  }
 
   containers = [
     {
