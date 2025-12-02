@@ -43,7 +43,7 @@ resource "google_vpc_access_connector" "cr-multiregion-connectors" {
 }
 
 module "cloud_run_v2_multiregion" {
-  source = "renato-rudnicki/cloud-run/google//modules/v2"
+  source = "../../modules/v2"
 
   for_each = toset(var.regions)
 
