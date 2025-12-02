@@ -7,7 +7,7 @@ The resources/services/activations/deletions that this example will create/trigg
 * Deploys a Cloud Run V2 service across multiple regions.
 * Creates a Service Account to be used by Cloud Run Service.
 * Creates a Serverless VPC Access Connectors per region.
-* Cloud Run → VPC integration through regional connectors.
+* Cloud Run -> VPC integration through regional connectors.
 
 ## Assumptions and Prerequisites
 
